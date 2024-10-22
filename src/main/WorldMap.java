@@ -1,52 +1,48 @@
 package main;
 
 import java.util.HashMap;
+import entity.*;
 
 public class WorldMap {
-	public static final String ANSI_RESET = "\033[0m"; 
-	public static final String RED = "\033[0;31m"; 
-	public static final String ANSI_BLACK_BACKGROUND = "\033[40m"; 
-	public static final String ANSI_RED_BACKGROUND = "\033[41m";   
-	public static final String ANSI_GREEN_BACKGROUND = "\033[42m"; 
-	public static final String ANSI_YELLOW_BACKGROUND = "\033[43m";
-	public static final String ANSI_BLUE_BACKGROUND = "\033[44m";
-	public static final String ANSI_PURPLE_BACKGROUND = "\033[45m";
-	public static final String ANSI_CYAN_BACKGROUND = "\033[46m";
-	public static final String ANSI_WHITE_BACKGROUND = "\033[47m";
 	
-	private final int height;
 	private final int width;
-	private final static int DEFAULT_HEIGHT = 10;
+	private final int height;
+	private final int quantityOfCells;
 	private final static int DEFAULT_WIDTH = 10;
-	private HashMap<Coordinates, String> entities = new HashMap<>();	
+	private final static int DEFAULT_HEIGHT = 10;
+	private HashMap<Coordinates, Entity> entities = new HashMap<>();	
 	
 	public WorldMap() {
-		this(DEFAULT_HEIGHT, DEFAULT_WIDTH);		
+		this(DEFAULT_WIDTH, DEFAULT_HEIGHT);		
 	}
 	
-	public WorldMap(int height, int width) {
-		this.height = height;
+	public WorldMap(int width, int height) {
 		this.width = width;
-	}
-	
-	public int getHeight() {
-		return height;
+		this.height = height;
+		this.quantityOfCells = width * height;
 	}
 	
 	public int getWidth() {
 		return width;
+	}	
+	public int getHeight() {
+		return height;
+	}
+
+	public int getQuontityOfCells() {
+		return quantityOfCells;
 	}
 	
 //	public HashMap<Coordinates, String> getEntities(){
 //		return this.entities;
 //	}
 	
-	public String getEntity(Coordinates coordinates) {
+	public Entity getEntity(Coordinates coordinates) {
 		return entities.get(coordinates);
 	}
 	
-	public void setEntity(Coordinates coordinates, String str) {
-		entities.put(coordinates, str);;
+	public void setEntity(Coordinates coordinates, Entity entity) {
+		entities.put(coordinates, entity);;
 	}
 	
 	public boolean isCellEmty(Coordinates coordinates) {
@@ -55,5 +51,9 @@ public class WorldMap {
 		}
 		return true;
 	}
+	
+
+
+
  
 }
