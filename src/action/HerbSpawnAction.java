@@ -1,5 +1,6 @@
 package action;
 
+import entity.Entity;
 import entity.Herb;
 import main.WorldMap;
 
@@ -7,7 +8,12 @@ public class HerbSpawnAction  extends EntitySpawnAction {
 
 	public HerbSpawnAction(WorldMap worldMap) {
 		super(worldMap);
-		this.entity = new Herb();	
-		this.quantityOfCellsForSpawning = worldMap.getQuontityOfCells()*5/100;
+		this.quantityOfCellsForSpawning = worldMap.getQuontityOfCells()*45/100;
 	}	
+	
+	@Override
+	protected Entity getSpawningEntity() {
+		return new Herb();
+	}
+	
 }

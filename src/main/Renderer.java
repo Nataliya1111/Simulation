@@ -1,8 +1,8 @@
 package main;
 
-import entity.*;
-
 import java.util.Random;
+
+import entity.*;
 
 public class Renderer {	
 	
@@ -27,11 +27,19 @@ public class Renderer {
 					mapLine += SpriteOfEmptySell;
 				}	
 				else {
-					Entity entity = this.worldMap.getEntity(coordinates);
-					mapLine += getSpriteOfEntity(entity);
+					Entity entity;
+					try {
+						entity = this.worldMap.getEntityByCoordinates(coordinates);
+						mapLine += getSpriteOfEntity(entity);
+					} catch (EntityNotFoundException e) {
+						e.printStackTrace();
+					}
+					
+
+					
 				}				
 			}
-			System.out.println(mapLine);
+			System.out.println(mapLine);			
 		}		
 	}
 	//возможно сделать внутренний класс SpriteOfAntity
@@ -51,7 +59,7 @@ public class Renderer {
 		    	String[] trees = {"🌲", "🌳"};
 		    	return trees[random.nextInt(trees.length)];
 		}
-		return "";
+		return "  ";
 	}
 	
 //	private String getSpriteOfEmptySell() {

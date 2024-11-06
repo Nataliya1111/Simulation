@@ -6,8 +6,8 @@ import entity.Entity;
 import main.Coordinates;
 import main.WorldMap;
 
-public abstract class EntitySpawnAction extends Action{
-	protected Entity entity;
+public abstract class EntitySpawnAction extends Action {
+	
 	protected int quantityOfCellsForSpawning;
 	
 	public EntitySpawnAction(WorldMap worldMap) {
@@ -20,19 +20,21 @@ public abstract class EntitySpawnAction extends Action{
 		while (true) {
 			coordinates = getRandomCoordinates();
 			if (worldMap.isCellEmty(coordinates)) {
-				worldMap.setEntity(coordinates, entity);
+				worldMap.setEntity(coordinates, getSpawningEntity());
 				return;
 			}
 		}		
-	}			
+	}		
 	
 	public void performOnStart() {
 		for (int i = 0; i < this.quantityOfCellsForSpawning; i++) {
 			perform();
 		}
 	}
-	
-	private Coordinates getRandomCoordinates() {		
+
+	protected abstract Entity getSpawningEntity();
+
+	protected Coordinates getRandomCoordinates() {		
 		Random random = new Random();
 		int randomX = random.nextInt(worldMap.getWidth());
 		int randomY = random.nextInt(worldMap.getHeight());

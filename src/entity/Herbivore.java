@@ -1,19 +1,27 @@
 package entity;
 
-import main.Coordinates;
+import main.WorldMap;
 
 public class Herbivore extends Creature {
 	
+	private final static int MAX_HP = 10;
+	private final static int DEFAULT_SPEED = 2;
+
+	
 	public Herbivore(){
-		this.hp = 10;
-		this.speed = 2;
+		this.hp = MAX_HP;
+		this.speed = DEFAULT_SPEED;
 	}
 
 	@Override
-	public void makeMove(Coordinates startingCoordinates) {
+	public void makeMove(WorldMap worldMap) {		//м.б. вынести в Creature
 		
-
-		
+		for (int i = 0; i < this.speed; i++) {
+			makeOneCellMovement(worldMap);
+		}		
 	}
+	
+	
+	
 
 }
