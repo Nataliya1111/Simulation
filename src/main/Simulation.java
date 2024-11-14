@@ -3,6 +3,7 @@ package main;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -20,13 +21,21 @@ public class Simulation {
 //	public static final String ANSI_GREEN_BACKGROUND = "\033[42m"; 
 //	public static final String ANSI_YELLOW_BACKGROUND = "\033[43m";
 	
-	private final WorldMap worldMap = new WorldMap(5, 5);
+	private final WorldMap worldMap = new WorldMap(10, 3);
 	private final Renderer renderer = new Renderer(worldMap);
-	private final List<EntitySpawnAction> initActions = new ArrayList<>();
+	private  List<EntitySpawnAction> initActions = new ArrayList<>();
+	private  List<Action> turnActions = new ArrayList<>();
+	
 	
 	
 	public void start() {
-		performInitSpawnActions();
+		
+		initActions.add(new PredatorSpawnAction(worldMap));
+		initActions.add(new HerbivoreSpawnAction(worldMap));
+		initActions.add(new HerbSpawnAction(worldMap));
+		for(EntitySpawnAction action : initActions) {
+			action.executeOnStart();
+		}
 		
 //		worldMap.setEntity(new Coordinates(5,5),ANSI_GREEN_BACKGROUND + "🐰" +  ANSI_RESET);
 //		worldMap.setEntity(new Coordinates(3,2),ANSI_YELLOW_BACKGROUND + "🐺" +  ANSI_RESET);
@@ -40,47 +49,39 @@ public class Simulation {
 		System.out.println(worldMap.getListOfHerbivores());
 		System.out.println(worldMap.getListOfPredators());
 		
-//		MoveAllCreaturesAction action = new MoveAllCreaturesAction(worldMap);
-//		action.perform();
-//		renderer.render();
+
+		turnActions.add(new MoveAllCreaturesAction(worldMap));
 		
-		Coordinates prCoord = null;
-		Predator pr1 = null;
-		Coordinates herbCoord = null;
-		Herbivore herb1 = null;
-		try {
-			prCoord = worldMap.getCoordinatesByEntity(worldMap.getListOfPredators().get(0));
-			//pr1 =  worldMap.getListOfPredators().get(0);
-			//herbCoord = worldMap.getCoordinatesByEntity(worldMap.getListOfHerbivores().get(0));
-			//herb1 =  worldMap.getListOfHerbivores().get(0);
-			//System.out.println(herb1.getClass());
-
-		} catch (EntityNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		
+		for(int i = 0; i<3; i++) {
+			for(Action action : turnActions) {
+				action.execute();
+			}
+			renderer.render();
+			System.out.println();
 		}
-		BfsPathFinder finder = new BfsPathFinder(worldMap);
-//		Coordinates foundCoord = finder.getCoordinatesOfGoal(prCoord, Herbivore.class);
-		List<Coordinates> getCoordinatesOfPath = finder.getCoordinatesOfPath(prCoord, Herbivore.class);
-		System.out.println(getCoordinatesOfPath);
-	//	System.out.println("" + foundCoord.getX() + foundCoord.getY());
-
-		for(Coordinates coordinatesOfPath : getCoordinatesOfPath) {
-			System.out.println("" + coordinatesOfPath.getX() + coordinatesOfPath.getY());
-		}
+		
 
 		
 	}
 	
-	private void performInitSpawnActions() {
-		initActions.add(new PredatorSpawnAction(worldMap));
-		initActions.add(new HerbivoreSpawnAction(worldMap));
-		initActions.add(new HerbSpawnAction(worldMap));
-
-		for(EntitySpawnAction action : initActions) {
-			action.performOnStart();
-		}
-	}
+//	private List getInitSpawnActionsList() {
+//		initActions.add(new PredatorSpawnAction(worldMap));
+//		initActions.add(new HerbivoreSpawnAction(worldMap));
+//		initActions.add(new HerbSpawnAction(worldMap));
+//
+//		for(EntitySpawnAction action : initActions) {
+//			action.executeOnStart();
+//		}
+//	}
+	
+//	private void executeTurnActions() {
+//		turnActions.add(new MoveAllCreaturesAction(worldMap));
+//		
+//		for(Action action : turnActions) {
+//			action.execute();
+//		}
+//	}
 	
 
 }

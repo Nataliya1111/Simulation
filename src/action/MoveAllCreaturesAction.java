@@ -1,31 +1,71 @@
 package action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import entity.Creature;
+import entity.Entity;
 import entity.Herbivore;
 import entity.Predator;
+import main.EntityNotFoundException;
 import main.WorldMap;
 
-public class MoveAllCreaturesAction extends Action {
-	
-	private final List<Herbivore> listOfHerbivores = worldMap.getListOfHerbivores();
-	private final List<Predator> listOfPredators = worldMap.getListOfPredators();
+public class MoveAllCreaturesAction extends Action {	
 
 	public MoveAllCreaturesAction(WorldMap worldMap) {
 		super(worldMap);
 	}
 
 	@Override
-	public void perform() {	
+	public void execute() {	
 		
-		for (Creature creature : listOfPredators) {
-			creature.makeMove(worldMap);
+		List<Entity> entities = worldMap.getListOfEntities();
+////
+//		List<Creature> creatures = new ArrayList<>();
+//		for (Entity entity : entities) {			
+//			if (entity instanceof Creature) {
+//				creatures.add((Creature)entity);
+//			}
+//		}
+//	
+//		for (Creature creature : creatures) {
+//			try {
+//				creature.makeMove(worldMap);
+//			} catch (EntityNotFoundException e) {
+//				e.printStackTrace();
+//			}
+//		}
+////		
+		List<Creature> predators = new ArrayList<>();
+		for (Entity entity : entities) {			
+			if (entity instanceof Predator) {
+				predators.add((Predator)entity);
+			}
 		}
 		
-		for (Creature creature : listOfHerbivores) {
-			creature.makeMove(worldMap);
+		List<Creature> herbivores = new ArrayList<>();
+		for (Entity entity : entities) {			
+			if (entity instanceof Herbivore) {
+				herbivores.add((Herbivore)entity);
+			}
 		}
+	
+		for (Creature creature : predators) {
+			try {
+				creature.makeMove(worldMap);
+			} catch (EntityNotFoundException e) {
+				e.printStackTrace();
+			}
+		}	
+		for (Creature creature : herbivores) {
+			try {
+				creature.makeMove(worldMap);
+			} catch (EntityNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+		
+
 		
 
 

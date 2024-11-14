@@ -15,7 +15,7 @@ public abstract class EntitySpawnAction extends Action {
 	}
 	
 	@Override
-	public void perform() {
+	public void execute() {
 		Coordinates coordinates;
 		while (true) {
 			coordinates = getRandomCoordinates();
@@ -26,9 +26,9 @@ public abstract class EntitySpawnAction extends Action {
 		}		
 	}		
 	
-	public void performOnStart() {
+	public void executeOnStart() {
 		for (int i = 0; i < this.quantityOfCellsForSpawning; i++) {
-			perform();
+			execute();
 		}
 	}
 

@@ -1,16 +1,21 @@
 package entity;
 
-import java.util.Random;
-
 import main.Coordinates;
 import main.EntityNotFoundException;
 import main.WorldMap;
+import pathfinder.Pathway;
 
 public abstract class Creature extends Entity {	
 	
 	protected int hp;
 	protected int speed;
+	//protected  Class<? extends Entity> entityForFood;
 	
+	protected Creature(int creatureHp, int creatureSpeed) {
+		  this.hp = creatureHp;
+		  this.speed = creatureSpeed;
+	}
+
 	public int getHp() {
 		return hp;
 	}
@@ -24,45 +29,50 @@ public abstract class Creature extends Entity {
 		this.speed = speed;
 	}
 	
-	public abstract void makeMove(WorldMap worldMap);
+//	protected Coordinates getCoordinates(WorldMap worldMap) {
+//		try {
+//			return worldMap.getCoordinatesByEntity(this);
+//		} catch (EntityNotFoundException e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
-	protected void makeOneCellMovement(WorldMap worldMap) {
+	protected void makeMovement(WorldMap worldMap, Coordinates finishCoordinates) {
+
 		try {
-			Coordinates startingCoordinates = worldMap.getCoordinatesByEntity(this);
-			Coordinates newCoordinates;
-			int x = startingCoordinates.getX();
-			int y = startingCoordinates.getY();
-			Random random = new Random();
-			
-			while(true) {
-				int randomInt = random.nextInt(4);
-				switch(randomInt) {
-					case 0:
-						newCoordinates = new Coordinates(x-1, y);
-						break;
-					case 1:
-						newCoordinates = new Coordinates(x+1, y);
-						break;
-					case 2:
-						newCoordinates = new Coordinates(x, y-1);
-						break;
-					case 3:
-						newCoordinates = new Coordinates(x, y+1);
-						break;
-					default:
-						newCoordinates = startingCoordinates;
-				}
-				if (worldMap.areCoordinatesAvailableForMove(newCoordinates)) {
-					break;
-				}
-			}
-			worldMap.setEntity(newCoordinates, this);
-			worldMap.removeEntity(startingCoordinates);
-			System.out.println("" +newCoordinates.getX()+ newCoordinates.getY());
+			worldMap.removeEntity(this);
 		} catch (EntityNotFoundException e) {
 			e.printStackTrace();
 		}
-		
+		worldMap.setEntity(finishCoordinates, this);
 	}
+	
+//	public void makeMove1(WorldMap worldMap) throws EntityNotFoundException {
+//		if (isDead()) {
+//			return;
+//		}
+//		BfsPathFinder pathFinder = new BfsPathFinder(worldMap);
+//		Pathway path = pathFinder.getPathway(startCoordinates, this.entityForFood);
+//		
+//		if(isTargetNear) {
+//			eat
+//		}
+//	}
+	
+	public boolean isDead(){
+		if (this.hp <= 0) {
+			return true;
+		}
+		return false;
+	}
+	
+	public abstract void makeMove(WorldMap worldMap) throws EntityNotFoundException;
+	
+	protected abstract void eat(Pathway path, WorldMap worldMap);
+	
+	
+
+
+//	protected abstract <T extends Entity> Class<T> goalEntity();
 
 }

@@ -8,7 +8,7 @@ public class HerbSpawnAction  extends EntitySpawnAction {
 
 	public HerbSpawnAction(WorldMap worldMap) {
 		super(worldMap);
-		this.quantityOfCellsForSpawning = worldMap.getQuontityOfCells()*45/100;
+		this.quantityOfCellsForSpawning = worldMap.getQuontityOfCells()*10/100;
 	}	
 	
 	@Override

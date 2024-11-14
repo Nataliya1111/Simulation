@@ -1,4 +1,4 @@
-package main;
+package pathfinder;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -10,20 +10,23 @@ import java.util.Map;
 import java.util.Optional;
 
 import entity.Entity;
+import main.Coordinates;
+import main.EntityNotFoundException;
+import main.WorldMap;
 
-public class BfsPathFinder implements Pathfinder {
+public class BfsPathFinder implements PathFinder {
 	
 	private final WorldMap worldMap;
 	private Deque<Coordinates> nextCoordinates;
 	private Map<Coordinates, Coordinates> seenCoordinates;
 	
-	BfsPathFinder(WorldMap worldMap){
+	public BfsPathFinder(WorldMap worldMap){
 		this.worldMap = worldMap;
 	}
-	
-	public <T> List<Coordinates> getCoordinatesOfPath(Coordinates startCoordinates, Class<T> goalEntity) {
+	@Override
+	public <T extends Entity> Pathway getPathway(Coordinates startCoordinates, Class<T> targetEntity) {
 		List<Coordinates> coordinatesOfPath = new ArrayList<>();
-		Optional<Coordinates> goalCoordinatesOptional = getCoordinatesOfGoal(startCoordinates, goalEntity); 
+		Optional<Coordinates> goalCoordinatesOptional = getCoordinatesOfGoal(startCoordinates, targetEntity); 
 		if (goalCoordinatesOptional.isPresent()){
 			Coordinates currentCoordinates = goalCoordinatesOptional.get();
 			while(!currentCoordinates.equals(startCoordinates)) {
@@ -33,11 +36,11 @@ public class BfsPathFinder implements Pathfinder {
 			Collections.reverse(coordinatesOfPath);	
 		}
 			
-		
-		return coordinatesOfPath;		
+		Pathway path = new Pathway(coordinatesOfPath);
+		return path;		
 	}
 	
-	private <T> Optional<Coordinates> getCoordinatesOfGoal(Coordinates startCoordinates, Class<T> goalEntity) {
+	private <T extends Entity> Optional<Coordinates> getCoordinatesOfGoal(Coordinates startCoordinates, Class<T> targetEntity) {
 		nextCoordinates = new ArrayDeque<>();
 		seenCoordinates = new HashMap<>();
 		nextCoordinates.addLast(startCoordinates);
@@ -59,12 +62,12 @@ public class BfsPathFinder implements Pathfinder {
 				} catch (EntityNotFoundException e) {
 					e.printStackTrace();
 				}
-				if(currentEntity.getClass()==goalEntity) { 
+				if(currentEntity.getClass()==targetEntity) { 
 					return Optional.of(currentCoordinates);
 				}
 			}						
 		}
-		return Optional.empty();  //CHANGE вариант с кончились цели и с застрял
+		return Optional.empty();  // вариант с кончились цели и с застрял
 	}
 	
 	private List<Coordinates> getConnectedCoordinates(Coordinates coordinates) {

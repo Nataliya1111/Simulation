@@ -43,12 +43,21 @@ public class Renderer {
 		}		
 	}
 	//возможно сделать внутренний класс SpriteOfAntity
+	// if 
 	private String getSpriteOfEntity(Entity entity) { 
 		Random random = new Random();
 		switch(entity.getClass().getSimpleName()) {
 		    case "Herbivore":
+		    	Creature herbivore = (Creature) entity;
+		    	if (herbivore.isDead()){
+		    		return "💀"; //1F480 
+		    	}
 		    	return "🐰";
 		    case "Predator":
+		    	Creature predator = (Creature) entity;
+		    	if (predator.isDead()){
+		    		return "💀"; //1F480 
+		    	}
 		    	return "🐺";
 		    case "Herb":
 		    	String[] herbs = {"🥕", "🥬"};

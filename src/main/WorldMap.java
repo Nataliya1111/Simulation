@@ -69,12 +69,12 @@ public class WorldMap {
 		return coordinates;
 	}
 	
-	private List<Entity> getListOfEntities(){
-		List<Entity> Entities = new ArrayList<>();
-		for (Map.Entry<Coordinates, Entity> entry : entities.entrySet()) {
-			Entities.add(entry.getValue());
+	public List<Entity> getListOfEntities(){
+		List<Entity> listOfEntities = new ArrayList<>();
+		for (Map.Entry<Coordinates, Entity> entry : (entities).entrySet()) {
+			listOfEntities.add(entry.getValue());
 		}
-		return Entities;
+		return listOfEntities;
 	}
 	
 	public List<Herbivore> getListOfHerbivores() {
@@ -97,11 +97,12 @@ public class WorldMap {
 		return Predators;		
 	}
 	
-	public void removeEntity(Coordinates coordinates) throws EntityNotFoundException {
-		if (this.isCellEmty(coordinates)) {
+	public void removeEntity(Entity entity) throws EntityNotFoundException {
+		Coordinates entityCoordinates = getCoordinatesByEntity(entity);
+		if (this.isCellEmty(entityCoordinates)) {
 			throw new EntityNotFoundException("Entity by coordinates is not found for removing");
 		}
-		entities.remove(coordinates);
+		entities.remove(entityCoordinates);
 	}
 	
 	public boolean isCellEmty(Coordinates coordinates) {

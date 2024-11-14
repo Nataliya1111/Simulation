@@ -10,6 +10,6 @@ public abstract class Action {
 		this.worldMap = worldMap;	
 	}
 	
-	public abstract void perform();
+	public abstract void execute();
 
 }
