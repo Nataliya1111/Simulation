@@ -1,8 +1,11 @@
-package main;
+package ui;
 
 import java.util.Random;
 
 import entity.*;
+import main.Coordinates;
+import main.EntityNotFoundException;
+import main.WorldMap;
 
 public class Renderer {	
 	
@@ -15,7 +18,12 @@ public class Renderer {
 	}
 
 	
-	public void render() {
+	public void render() {		
+		
+		ConsoleCleaner.setCleaningMode(1);
+		ConsoleCleaner.clean();
+		System.out.println();
+		
 		final int heightOfMap = worldMap.getHeight();
 		final int widthOfMap = worldMap.getWidth();		
 		
@@ -40,7 +48,8 @@ public class Renderer {
 				}				
 			}
 			System.out.println(mapLine);			
-		}		
+		}
+//		System.out.println();
 	}
 	//возможно сделать внутренний класс SpriteOfAntity
 	// if 

@@ -1,18 +1,11 @@
 package main;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.AbstractList;
 import java.util.ArrayList;
-import java.util.HashMap;
 
-//import entity.*;
 import action.*;
-import entity.Entity;
-import entity.Herbivore;
-import entity.Predator;
-import entity.Creature;
+import ui.Renderer;
+import ui.UserCommandsExecutor;
 
 public class Simulation {
 	
@@ -23,16 +16,18 @@ public class Simulation {
 	
 	private final WorldMap worldMap = new WorldMap(10, 3);
 	private final Renderer renderer = new Renderer(worldMap);
-	private  List<EntitySpawnAction> initActions = new ArrayList<>();
-	private  List<Action> turnActions = new ArrayList<>();
+	private List<EntitySpawnAction> initActions = new ArrayList<>();
+	private List<Action> turnActions = new ArrayList<>();
 	
-	
+	boolean isPaused = false;
+	boolean isFinished = false;	
 	
 	public void start() {
 		
-		initActions.add(new PredatorSpawnAction(worldMap));
-		initActions.add(new HerbivoreSpawnAction(worldMap));
-		initActions.add(new HerbSpawnAction(worldMap));
+		UserCommandsExecutor executor = new UserCommandsExecutor(this);
+		executor.launch();
+		
+		initActions = getInitSpawnActionsList();
 		for(EntitySpawnAction action : initActions) {
 			action.executeOnStart();
 		}
@@ -42,46 +37,66 @@ public class Simulation {
 //		worldMap.setEntity(new Coordinates(4,5),ANSI_RED_BACKGROUND + "🐰" +  ANSI_RESET);
 
 		renderer.render();
+		makeThreadSleep(1000);
 		
 	
 
 		
 		System.out.println(worldMap.getListOfHerbivores());
-		System.out.println(worldMap.getListOfPredators());
-		
-
-		turnActions.add(new MoveAllCreaturesAction(worldMap));
+		System.out.println(worldMap.getListOfPredators());		
 		
 		
-		for(int i = 0; i<3; i++) {
-			for(Action action : turnActions) {
-				action.execute();
+		
+		turnActions = this.getTurnActionsList();
+		
+		while(!isFinished) {
+			
+			if (!isPaused) {				
+				
+				for(Action action : turnActions) {
+					action.execute();
+				}				
+				renderer.render();				
+				
+				makeThreadSleep(1000);				
 			}
-			renderer.render();
-			System.out.println();
-		}
-		
-
-		
+			makeThreadSleep(10);			
+		}		
 	}
 	
-//	private List getInitSpawnActionsList() {
-//		initActions.add(new PredatorSpawnAction(worldMap));
-//		initActions.add(new HerbivoreSpawnAction(worldMap));
-//		initActions.add(new HerbSpawnAction(worldMap));
-//
-//		for(EntitySpawnAction action : initActions) {
-//			action.executeOnStart();
-//		}
-//	}
+	public void setPaused() {
+		isPaused = true;
+	}
 	
-//	private void executeTurnActions() {
-//		turnActions.add(new MoveAllCreaturesAction(worldMap));
-//		
-//		for(Action action : turnActions) {
-//			action.execute();
-//		}
-//	}
+	public void setContinued() {
+		isPaused = false;
+	}
+	
+	public void finish() {
+		isFinished = true;
+	}
+	
+	private List<EntitySpawnAction> getInitSpawnActionsList() {
+		initActions.add(new PredatorSpawnAction(worldMap));
+		initActions.add(new HerbivoreSpawnAction(worldMap));
+		initActions.add(new HerbSpawnAction(worldMap));
+
+		return initActions;
+	}
+	
+	private List<Action> getTurnActionsList() {
+		turnActions.add(new MoveAllCreaturesAction(worldMap));		
+
+		return turnActions;
+	}
+	
+	private void makeThreadSleep(int milliseconds) {
+		try {
+			Thread.sleep(milliseconds);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
 	
 
 }
