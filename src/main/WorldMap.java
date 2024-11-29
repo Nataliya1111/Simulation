@@ -37,10 +37,6 @@ public class WorldMap {
 		return quantityOfCells;
 	}
 	
-//	public HashMap<Coordinates,Entity> getEntities(){ //remove
-//		return this.entities;
-//	}
-	
 	public Entity getEntityByCoordinates(Coordinates coordinates) throws EntityNotFoundException{
 		if (this.isCellEmty(coordinates)) {
 			throw new EntityNotFoundException("Entity by coordinates is not found");

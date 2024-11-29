@@ -1,4 +1,4 @@
-package action;
+package action.init;
 
 import entity.Entity;
 import entity.Herb;
@@ -8,7 +8,7 @@ public class HerbSpawnAction  extends EntitySpawnAction {
 
 	public HerbSpawnAction(WorldMap worldMap) {
 		super(worldMap);
-		this.quantityOfCellsForSpawning = worldMap.getQuontityOfCells()*10/100;
+		this.percentOfCellsForSpawning = 5;
 	}	
 	
 	@Override

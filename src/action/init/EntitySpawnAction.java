@@ -1,13 +1,15 @@
-package action;
+package action.init;
 
 import java.util.Random;
 
+import action.Action;
 import entity.Entity;
 import main.Coordinates;
 import main.WorldMap;
 
 public abstract class EntitySpawnAction extends Action {
 	
+	protected int percentOfCellsForSpawning;
 	protected int quantityOfCellsForSpawning;
 	
 	public EntitySpawnAction(WorldMap worldMap) {
@@ -27,6 +29,7 @@ public abstract class EntitySpawnAction extends Action {
 	}		
 	
 	public void executeOnStart() {
+		this.quantityOfCellsForSpawning = worldMap.getQuontityOfCells()*this.percentOfCellsForSpawning/100;
 		for (int i = 0; i < this.quantityOfCellsForSpawning; i++) {
 			execute();
 		}

@@ -1,4 +1,4 @@
-package action;
+package action.init;
 
 import entity.Entity;
 import entity.Herbivore;
@@ -8,7 +8,7 @@ public class HerbivoreSpawnAction extends EntitySpawnAction {
 
 	public HerbivoreSpawnAction(WorldMap worldMap) {
 		super(worldMap);
-		this.quantityOfCellsForSpawning = worldMap.getQuontityOfCells()*10/100;
+		this.percentOfCellsForSpawning = 4;
 	}
 
 	@Override

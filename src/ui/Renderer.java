@@ -1,7 +1,5 @@
 package ui;
 
-import java.util.Random;
-
 import entity.*;
 import main.Coordinates;
 import main.EntityNotFoundException;
@@ -10,6 +8,17 @@ import main.WorldMap;
 public class Renderer {	
 	
 	public static final String SpriteOfEmptySell = "🏻";   //1F3FB = \uD83C\uDFFB
+	public static final String SpriteOfHerbivore = "🐰";
+	public static final String SpriteOfPredator = "🐺";
+	public static final String SpriteOfDeadCreature = "💀"; //1F480
+	public static final String SpriteOfHerb = "🥕";
+	public static final String SpriteOfRock = "🪨";
+	public static final String SpriteOfTree = "🌲";  //1F332	= \uD83C\uDF32
+	
+	
+	public static final String ANSI_RESET = "\033[0m"; 
+	public static final String ANSI_RED_BACKGROUND = "\033[41m"; 
+	public static final String ANSI_GREEN_BACKGROUND = "\033[42m"; 
 	
 	private final WorldMap worldMap;
 	
@@ -41,47 +50,47 @@ public class Renderer {
 						mapLine += getSpriteOfEntity(entity);
 					} catch (EntityNotFoundException e) {
 						e.printStackTrace();
-					}
-					
-
-					
+					}					
 				}				
 			}
 			System.out.println(mapLine);			
 		}
-//		System.out.println();
 	}
-	//возможно сделать внутренний класс SpriteOfAntity
-	// if 
+
 	private String getSpriteOfEntity(Entity entity) { 
-		Random random = new Random();
 		switch(entity.getClass().getSimpleName()) {
 		    case "Herbivore":
 		    	Creature herbivore = (Creature) entity;
-		    	if (herbivore.isDead()){
-		    		return "💀"; //1F480 
+		    	if (herbivore.isNewBorn()) {
+		    		return ANSI_GREEN_BACKGROUND + SpriteOfHerbivore + ANSI_RESET;
 		    	}
-		    	return "🐰";
+		    	if (herbivore.isDead()){
+		    		return SpriteOfDeadCreature; 
+		    	}
+		    	if (herbivore.getHp() < 3) {
+		    		return ANSI_RED_BACKGROUND + SpriteOfHerbivore + ANSI_RESET;
+		    	}
+		    	return SpriteOfHerbivore;
 		    case "Predator":
 		    	Creature predator = (Creature) entity;
-		    	if (predator.isDead()){
-		    		return "💀"; //1F480 
+		    	if (predator.isNewBorn()) {
+		    		return ANSI_GREEN_BACKGROUND + SpriteOfPredator + ANSI_RESET;
 		    	}
-		    	return "🐺";
+		    	if (predator.isDead()){
+		    		return SpriteOfDeadCreature;  
+		    	}
+		    	if (predator.getHp() < 3) {
+		    		return ANSI_RED_BACKGROUND + SpriteOfPredator + ANSI_RESET;
+		    	}
+		    	return SpriteOfPredator;
 		    case "Herb":
-		    	String[] herbs = {"🥕", "🥬"};
-		    	return herbs[random.nextInt(herbs.length)];
+		    	return SpriteOfHerb;
 		    case "Rock":
-		    	return "🪨";
+		    	return SpriteOfRock;
 		    case "Tree":
-		    	String[] trees = {"🌲", "🌳"};
-		    	return trees[random.nextInt(trees.length)];
+		    	return SpriteOfTree; 
 		}
-		return "  ";
+		return "??";
 	}
-	
-//	private String getSpriteOfEmptySell() {
-//		return "🏻";  //1F3FB = \uD83C\uDFFB
-//	}
 
 }

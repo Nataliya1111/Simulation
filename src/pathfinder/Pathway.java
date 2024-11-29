@@ -12,11 +12,6 @@ public class Pathway {
 	public Pathway(List<Coordinates> coordinatesOfPath) {
 		this.coordinatesOfPath = coordinatesOfPath;
 	}
-	
-//	public <T extends Entity> Pathway (WorldMap worldMap, Coordinates startCoordinates, Class<T> targetEntity) {
-//		this.worldMap = worldMap;
-//		this.list = (new BfsPathFinder(worldMap)).getPathCoordinates(startCoordinates, targetEntity); 
-//	}
 
 	public List<Coordinates> getCoordinatesOfPath() {
 		return coordinatesOfPath;
@@ -35,15 +30,22 @@ public class Pathway {
 		return getCoordinates(targetIndexInList);
 	}
 	
-	public boolean isTargetOnMap() {
+	public boolean isAvailableTarget() {
 		if (coordinatesOfPath.isEmpty()) {
 			return false;
 		}
 		return true;
 	}
 	
-	public boolean isTargetNearestCell(){
-		if (coordinatesOfPath.size() == 1) {
+//	public boolean isTargetNearestCell(){
+//		if (coordinatesOfPath.size() == 1) {
+//			return true;
+//		}
+//		return false;
+//	}
+	
+	public boolean isTargetCloseEnoughToEat(int speed){
+		if (coordinatesOfPath.size() <= speed) {
 			return true;
 		}
 		return false;

@@ -1,4 +1,4 @@
-package action;
+package action.init;
 
 import entity.Entity;
 import entity.Predator;
@@ -8,7 +8,7 @@ public class PredatorSpawnAction extends EntitySpawnAction {
 
 	public PredatorSpawnAction(WorldMap worldMap) {
 		super(worldMap);
-		this.quantityOfCellsForSpawning = worldMap.getQuontityOfCells()*5/100;
+		this.percentOfCellsForSpawning = 3;
 	}	
 	
 	@Override

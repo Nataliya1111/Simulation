@@ -1,8 +1,9 @@
-package action;
+package action.turn;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import action.Action;
 import entity.Creature;
 import entity.Entity;
 import entity.Herbivore;

@@ -1,19 +1,24 @@
 package entity;
 
+import java.util.Random;
+
 import main.Coordinates;
 import main.EntityNotFoundException;
 import main.WorldMap;
+import pathfinder.BfsPathFinder;
 import pathfinder.Pathway;
 
 public abstract class Creature extends Entity {	
 	
 	protected int hp;
 	protected int speed;
-	//protected  Class<? extends Entity> entityForFood;
+	protected boolean isNewBorn;
+	protected Class<? extends Entity> entityForFood;
 	
-	protected Creature(int creatureHp, int creatureSpeed) {
+	protected Creature(int creatureHp, int creatureSpeed, Class<? extends Entity> entityForFood) {
 		  this.hp = creatureHp;
 		  this.speed = creatureSpeed;
+		  this.entityForFood = entityForFood;
 	}
 
 	public int getHp() {
@@ -29,13 +34,42 @@ public abstract class Creature extends Entity {
 		this.speed = speed;
 	}
 	
-//	protected Coordinates getCoordinates(WorldMap worldMap) {
-//		try {
-//			return worldMap.getCoordinatesByEntity(this);
-//		} catch (EntityNotFoundException e) {
-//			e.printStackTrace();
-//		}
-//	}
+	public boolean isNewBorn() {
+		return isNewBorn;
+	}
+	
+	public boolean isDead(){
+		if (this.hp <= 0) {
+			return true;
+		}
+		return false;
+	}
+	
+	public void makeMove(WorldMap worldMap) throws EntityNotFoundException { 
+		this.isNewBorn = false;
+
+		this.hp -= 1;
+		
+		if (isDead()) {
+			return;
+		}
+		
+		BfsPathFinder pathFinder = new BfsPathFinder(worldMap);
+		Pathway path = pathFinder.getPathway(worldMap.getCoordinatesByEntity(this), this.entityForFood);		
+		
+		if (!path.isAvailableTarget()) {
+			makeRandomMove(worldMap);
+			return;
+			 
+		}
+		if (path.isTargetCloseEnoughToEat(this.speed)) {
+			this.eat(path, worldMap);
+			return;
+		}
+		
+		Coordinates movementCoordinates = path.getCoordinates(this.speed - 1);		
+		this.makeMovement(worldMap, movementCoordinates);		
+	}
 	
 	protected void makeMovement(WorldMap worldMap, Coordinates finishCoordinates) {
 
@@ -47,32 +81,39 @@ public abstract class Creature extends Entity {
 		worldMap.setEntity(finishCoordinates, this);
 	}
 	
-//	public void makeMove1(WorldMap worldMap) throws EntityNotFoundException {
-//		if (isDead()) {
-//			return;
-//		}
-//		BfsPathFinder pathFinder = new BfsPathFinder(worldMap);
-//		Pathway path = pathFinder.getPathway(startCoordinates, this.entityForFood);
-//		
-//		if(isTargetNear) {
-//			eat
-//		}
-//	}
-	
-	public boolean isDead(){
-		if (this.hp <= 0) {
-			return true;
+	private void makeRandomMove(WorldMap worldMap) throws EntityNotFoundException {
+		Coordinates startCoordinates = worldMap.getCoordinatesByEntity(this);
+		Coordinates finishCoordinates = startCoordinates;
+		int x = startCoordinates.getX();
+		int y = startCoordinates.getY();
+		Random random = new Random();
+		int triesToMove = 4;
+		for(triesToMove = 0; triesToMove < 4; triesToMove++) {
+			int randomInt = random.nextInt(4);
+			switch(randomInt) {
+				case 0:
+					finishCoordinates = new Coordinates(x-1, y);
+					break;
+				case 1:
+					finishCoordinates = new Coordinates(x+1, y);
+					break;
+				case 2:
+					finishCoordinates = new Coordinates(x, y-1);
+					break;
+				case 3:
+					finishCoordinates = new Coordinates(x, y+1);
+					break;
+			}
+			if (worldMap.areCoordinatesAvailableForMove(finishCoordinates)) {
+				break;
+			}
+			else {
+				finishCoordinates = startCoordinates;
+			}
 		}
-		return false;
-	}
+		this.makeMovement(worldMap, finishCoordinates);
+	}	
 	
-	public abstract void makeMove(WorldMap worldMap) throws EntityNotFoundException;
-	
-	protected abstract void eat(Pathway path, WorldMap worldMap);
-	
-	
-
-
-//	protected abstract <T extends Entity> Class<T> goalEntity();
+	protected abstract void eat(Pathway path, WorldMap worldMap);	
 
 }
