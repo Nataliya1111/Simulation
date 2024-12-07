@@ -30,19 +30,12 @@ public class Pathway {
 		return getCoordinates(targetIndexInList);
 	}
 	
-	public boolean isAvailableTarget() {
+	public boolean isAvailableTargetExist() {
 		if (coordinatesOfPath.isEmpty()) {
 			return false;
 		}
 		return true;
 	}
-	
-//	public boolean isTargetNearestCell(){
-//		if (coordinatesOfPath.size() == 1) {
-//			return true;
-//		}
-//		return false;
-//	}
 	
 	public boolean isTargetCloseEnoughToEat(int speed){
 		if (coordinatesOfPath.size() <= speed) {

@@ -1,41 +1,51 @@
 package ui;
 
 public class ConsoleCleaner {
-	private static int cleaningMode = 0; //not clean
-//	private final static int NOT_CLEANING_MODE = 0;
 	
-	public static int getCleaningMode() {
+	public static enum CleaningMode{
+		ZERO("0"),
+		ONE("1"), 
+		TWO("2"),
+		THREE("3"),
+		FOUR("4");
+		
+		private final String mode;
+		
+		CleaningMode(String mode){
+			this.mode = mode;
+		}
+		public String getNumber() {
+			return mode;
+		}
+	}
+	
+	private static final CleaningMode DEFAULT_CLEANING_MODE = CleaningMode.ONE; 
+	private static CleaningMode cleaningMode = DEFAULT_CLEANING_MODE; 
+	
+	public static CleaningMode getCleaningMode() {
 		return cleaningMode;
 	}
 
-	public static void setCleaningMode(int cleaningMode) {
-		if (cleaningMode >= 0 && cleaningMode <= 4) {
-			ConsoleCleaner.cleaningMode = cleaningMode;
-			return;
-		}
-		System.out.println("Invalid cleaning mode");
-    	return;
-		
+	public static void setCleaningMode(CleaningMode cleaningMode) {
+		ConsoleCleaner.cleaningMode = cleaningMode;
+    	return;		
 	}
 	
 	public static void clean() {
 		switch(cleaningMode) {
-		    case 0:
+		    case ZERO:       //not clean
 		    	return;
-		    case 1:
+		    case ONE:
 		    	cleanEscapeCode1();
 		    	return;
-		    case 2:
+		    case TWO:
 		    	cleanEscapeCode2();
 		    	return;
-		    case 3:
+		    case THREE:
 		    	cleanforWindows();
 		    	return;
-		    case 4:
+		    case FOUR:
 		    	cleanForLinuxMac();
-		    	return;
-		    default:
-		    	System.out.println("Invalid cleaning mode");
 		    	return;
 		}		
 	}	

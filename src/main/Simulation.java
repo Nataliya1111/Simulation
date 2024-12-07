@@ -3,62 +3,62 @@ package main;
 import java.util.List;
 import java.util.ArrayList;
 
-import action.*;
-import action.init.EntitySpawnAction;
-import action.init.HerbSpawnAction;
-import action.init.HerbivoreSpawnAction;
-import action.init.PredatorSpawnAction;
-import action.init.RockSpawnAction;
-import action.init.TreeSpawnAction;
-import action.turn.CheckCreaturesPresenceAction;
-import action.turn.CleanDeadCreaturesAction;
-import action.turn.HerbRefillAction;
-import action.turn.HerbivoreRefillAction;
-import action.turn.MoveAllCreaturesAction;
-import action.turn.PredatorRefillAction;
+import action.Action;
+import action.init.*;
+import action.turn.*;
+import ui.DisplayInfo;
 import ui.Renderer;
-import ui.UserCommandsExecutor;
 
 public class Simulation {	
 
-	private final WorldMap worldMap = new WorldMap(15, 10);
-	private final Renderer renderer = new Renderer(worldMap);
+	private WorldMap worldMap = new WorldMap();
+	private Renderer renderer;
 	private List<EntitySpawnAction> initActions = new ArrayList<>();
 	private List<Action> turnActions = new ArrayList<>();
+	private CountStatisticsAction countStatistics;
 	
 	private int movesCounter = 0;
 	private boolean isPaused = false;
 	private boolean isFinished = false;	
+	private int sleepDuration = 1000;	
 	
-	public void start() {
-		
-		UserCommandsExecutor executor = new UserCommandsExecutor(this);
-		executor.launch();
+	public void setWorldMap(int width, int height) {
+		this.worldMap = new WorldMap(width, height);
+	}
+	
+	public void setSleepDuration(int sleepDuration) {
+		this.sleepDuration = sleepDuration;
+	}
+
+	public void start() {		
+		renderer = new Renderer(worldMap);
 		
 		initActions = getInitSpawnActionsList();
 		for(EntitySpawnAction action : initActions) {
 			action.executeOnStart();
 		}
 
-		renderer.render();
-		makeThreadSleep(1000);	
+		renderer.render();		
+		makeThreadSleep(sleepDuration);	
 		
+		countStatistics = new CountStatisticsAction(worldMap, this);
 		turnActions = this.getTurnActionsList();
 		
 		while(!isFinished) {
 			
-			if (!isPaused) {				
+			if (!isPaused) {	
+				movesCounter++;
 				for(Action action : turnActions) {
 					action.execute();
 					if(isFinished) {
 						break;
 					}
 				}
-				movesCounter = getMovesCounter() + 1;
 				renderer.render();	
-				System.out.println(movesCounter);
 				
-				makeThreadSleep(10);				
+				DisplayInfo.printStatistics(countStatistics);
+				
+				makeThreadSleep(sleepDuration);				
 			}
 			makeThreadSleep(10);			
 		}		
@@ -76,7 +76,7 @@ public class Simulation {
 		isPaused = false;
 	}
 	
-	public void finish() {
+	public void setFinished() {
 		isFinished = true;
 	}
 	
@@ -93,10 +93,11 @@ public class Simulation {
 	private List<Action> getTurnActionsList() {
 		turnActions.add(new CleanDeadCreaturesAction(worldMap));
 		turnActions.add(new MoveAllCreaturesAction(worldMap));
+		turnActions.add(countStatistics);
 		turnActions.add(new CheckCreaturesPresenceAction(worldMap, this));	
 		turnActions.add(new PredatorRefillAction(worldMap));
 		turnActions.add(new HerbivoreRefillAction(worldMap));
-		turnActions.add(new HerbRefillAction(worldMap));
+		turnActions.add(new HerbRefillAction(worldMap));		
 
 		return turnActions;
 	}

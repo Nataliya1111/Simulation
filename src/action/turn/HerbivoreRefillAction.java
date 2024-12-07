@@ -8,7 +8,7 @@ public class HerbivoreRefillAction extends EntityRefillAction {
 
 	public HerbivoreRefillAction(WorldMap worldMap) {
 		super(worldMap);
-		this.percentPerTurn = 0.1;
+		this.percentPerTurn = 0.15;
 		this.maxPercentOnMap = 5;
 		this.refillingEntity = Herbivore.class;
 		this.entitySpawnAction = new HerbivoreSpawnAction(worldMap);

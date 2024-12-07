@@ -4,21 +4,24 @@ import entity.*;
 import main.Coordinates;
 import main.EntityNotFoundException;
 import main.WorldMap;
+import ui.ConsoleCleaner.CleaningMode;
 
 public class Renderer {	
 	
-	public static final String SpriteOfEmptySell = "🏻";   //1F3FB = \uD83C\uDFFB
-	public static final String SpriteOfHerbivore = "🐰";
-	public static final String SpriteOfPredator = "🐺";
-	public static final String SpriteOfDeadCreature = "💀"; //1F480
-	public static final String SpriteOfHerb = "🥕";
-	public static final String SpriteOfRock = "🪨";
-	public static final String SpriteOfTree = "🌲";  //1F332	= \uD83C\uDF32
+	private static final String SPRITE_OF_EMPTY_SELL = "🟫";   
+	private static final String SPRITE_OF_HERBIVORE = "🐰";
+	private static final String SPRITE_OF_PREDATOR = "🐺";
+	private static final String SPRITE_OF_DEAD_CREATURE = "💀"; 
+	private static final String SPRITE_OF_HERB = "🥕";
+	private static final String SPRITE_OF_ROCK = "🪨";
+	private static final String SPRITE_OF_TREE = "🌲"; 
 	
 	
-	public static final String ANSI_RESET = "\033[0m"; 
-	public static final String ANSI_RED_BACKGROUND = "\033[41m"; 
-	public static final String ANSI_GREEN_BACKGROUND = "\033[42m"; 
+	private static final String ANSI_RESET = "\033[0m"; 
+	private static final String ANSI_RED_BACKGROUND = "\033[41m"; 
+	private static final String ANSI_GREEN_BACKGROUND = "\033[42m";
+	
+	CleaningMode cleaningMode = CleaningMode.ZERO;
 	
 	private final WorldMap worldMap;
 	
@@ -29,9 +32,10 @@ public class Renderer {
 	
 	public void render() {		
 		
-		ConsoleCleaner.setCleaningMode(1);
 		ConsoleCleaner.clean();
 		System.out.println();
+		
+		DisplayInfo.printTurnMessage();
 		
 		final int heightOfMap = worldMap.getHeight();
 		final int widthOfMap = worldMap.getWidth();		
@@ -41,7 +45,7 @@ public class Renderer {
 			for (int x = 0; x < widthOfMap; x ++) {
 				Coordinates coordinates = new Coordinates(x, y);
 				if (worldMap.isCellEmty(coordinates)){ 
-					mapLine += SpriteOfEmptySell;
+					mapLine += SPRITE_OF_EMPTY_SELL;
 				}	
 				else {
 					Entity entity;
@@ -62,33 +66,33 @@ public class Renderer {
 		    case "Herbivore":
 		    	Creature herbivore = (Creature) entity;
 		    	if (herbivore.isNewBorn()) {
-		    		return ANSI_GREEN_BACKGROUND + SpriteOfHerbivore + ANSI_RESET;
+		    		return ANSI_GREEN_BACKGROUND + SPRITE_OF_HERBIVORE + ANSI_RESET;
 		    	}
 		    	if (herbivore.isDead()){
-		    		return SpriteOfDeadCreature; 
+		    		return SPRITE_OF_DEAD_CREATURE; 
 		    	}
 		    	if (herbivore.getHp() < 3) {
-		    		return ANSI_RED_BACKGROUND + SpriteOfHerbivore + ANSI_RESET;
+		    		return ANSI_RED_BACKGROUND + SPRITE_OF_HERBIVORE + ANSI_RESET;
 		    	}
-		    	return SpriteOfHerbivore;
+		    	return SPRITE_OF_HERBIVORE;
 		    case "Predator":
 		    	Creature predator = (Creature) entity;
 		    	if (predator.isNewBorn()) {
-		    		return ANSI_GREEN_BACKGROUND + SpriteOfPredator + ANSI_RESET;
+		    		return ANSI_GREEN_BACKGROUND + SPRITE_OF_PREDATOR + ANSI_RESET;
 		    	}
 		    	if (predator.isDead()){
-		    		return SpriteOfDeadCreature;  
+		    		return SPRITE_OF_DEAD_CREATURE;  
 		    	}
 		    	if (predator.getHp() < 3) {
-		    		return ANSI_RED_BACKGROUND + SpriteOfPredator + ANSI_RESET;
+		    		return ANSI_RED_BACKGROUND + SPRITE_OF_PREDATOR + ANSI_RESET;
 		    	}
-		    	return SpriteOfPredator;
+		    	return SPRITE_OF_PREDATOR;
 		    case "Herb":
-		    	return SpriteOfHerb;
+		    	return SPRITE_OF_HERB;
 		    case "Rock":
-		    	return SpriteOfRock;
+		    	return SPRITE_OF_ROCK;
 		    case "Tree":
-		    	return SpriteOfTree; 
+		    	return SPRITE_OF_TREE; 
 		}
 		return "??";
 	}

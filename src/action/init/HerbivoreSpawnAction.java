@@ -8,7 +8,7 @@ public class HerbivoreSpawnAction extends EntitySpawnAction {
 
 	public HerbivoreSpawnAction(WorldMap worldMap) {
 		super(worldMap);
-		this.percentOfCellsForSpawning = 4;
+		this.percentOfCellsForSpawning = 5;
 	}
 
 	@Override

@@ -21,22 +21,7 @@ public class MoveAllCreaturesAction extends Action {
 	public void execute() {	
 		
 		List<Entity> entities = worldMap.getListOfEntities();
-////
-//		List<Creature> creatures = new ArrayList<>();
-//		for (Entity entity : entities) {			
-//			if (entity instanceof Creature) {
-//				creatures.add((Creature)entity);
-//			}
-//		}
-//	
-//		for (Creature creature : creatures) {
-//			try {
-//				creature.makeMove(worldMap);
-//			} catch (EntityNotFoundException e) {
-//				e.printStackTrace();
-//			}
-//		}
-////		
+
 		List<Creature> predators = new ArrayList<>();
 		for (Entity entity : entities) {			
 			if (entity instanceof Predator) {
@@ -64,13 +49,7 @@ public class MoveAllCreaturesAction extends Action {
 			} catch (EntityNotFoundException e) {
 				e.printStackTrace();
 			}
-		}
-		
-
-		
-
-
-		
+		}		
 	}
 
 }

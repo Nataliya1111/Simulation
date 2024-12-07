@@ -29,7 +29,7 @@ public abstract class EntitySpawnAction extends Action {
 	}		
 	
 	public void executeOnStart() {
-		this.quantityOfCellsForSpawning = worldMap.getQuontityOfCells()*this.percentOfCellsForSpawning/100;
+		this.quantityOfCellsForSpawning = Math.round((float)worldMap.getQuontityOfCells()*this.percentOfCellsForSpawning/100);
 		for (int i = 0; i < this.quantityOfCellsForSpawning; i++) {
 			execute();
 		}

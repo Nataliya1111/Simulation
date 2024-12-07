@@ -38,7 +38,7 @@ public class CheckCreaturesPresenceAction extends Action {
 		}
 		
 		if(!isHerbivoreOnMap || !isPredatorOnMap) {
-			this.simulation.finish();
+			this.simulation.setFinished();			
 		}
 	}
 

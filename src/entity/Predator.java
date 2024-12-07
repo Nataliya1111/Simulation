@@ -7,7 +7,7 @@ import pathfinder.Pathway;
 
 public class Predator extends Creature {
 	
-	private final static int MAX_HP = 12;
+	private final static int MAX_HP = 14;
 	private final static int DEFAULT_SPEED = 1;
 	private final static Class<? extends Entity> DEFAULT_FOOD = Herbivore.class;
 

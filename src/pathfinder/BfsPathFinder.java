@@ -67,7 +67,7 @@ public class BfsPathFinder implements PathFinder {
 				}
 			}						
 		}
-		return Optional.empty();  // вариант с кончились цели и с застрял
+		return Optional.empty();  
 	}
 	
 	private List<Coordinates> getConnectedCoordinates(Coordinates coordinates) {

@@ -57,7 +57,7 @@ public abstract class Creature extends Entity {
 		BfsPathFinder pathFinder = new BfsPathFinder(worldMap);
 		Pathway path = pathFinder.getPathway(worldMap.getCoordinatesByEntity(this), this.entityForFood);		
 		
-		if (!path.isAvailableTarget()) {
+		if (!path.isAvailableTargetExist()) {
 			makeRandomMove(worldMap);
 			return;
 			 

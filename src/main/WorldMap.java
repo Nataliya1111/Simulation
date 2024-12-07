@@ -12,8 +12,8 @@ public class WorldMap {
 	private final int width;
 	private final int height;
 	private final int quantityOfCells;
-	private final static int DEFAULT_WIDTH = 10;
-	private final static int DEFAULT_HEIGHT = 10;
+	public final static int DEFAULT_WIDTH = 15;
+	public final static int DEFAULT_HEIGHT = 15;
 	private final HashMap<Coordinates, Entity> entities = new HashMap<>();	
 	
 	public WorldMap() {
@@ -73,26 +73,6 @@ public class WorldMap {
 		return listOfEntities;
 	}
 	
-	public List<Herbivore> getListOfHerbivores() {
-		List<Herbivore> Herbivores = new ArrayList<>();
-		for (Entity entity : this.getListOfEntities()) {			
-			if (entity instanceof Herbivore) {
-				Herbivores.add((Herbivore)entity);
-			}
-		}
-		return Herbivores;		
-	}
-	
-	public List<Predator> getListOfPredators() {
-		List<Predator> Predators = new ArrayList<>();
-		for (Entity entity : this.getListOfEntities()) {			
-			if (entity instanceof Predator) {
-				Predators.add((Predator)entity);
-			}
-		}
-		return Predators;		
-	}
-	
 	public void removeEntity(Entity entity) throws EntityNotFoundException {
 		Coordinates entityCoordinates = getCoordinatesByEntity(entity);
 		if (this.isCellEmty(entityCoordinates)) {
@@ -123,7 +103,5 @@ public class WorldMap {
 		}
 		return false;
 	}
-
-
  
 }
