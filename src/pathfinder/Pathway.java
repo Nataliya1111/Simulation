@@ -31,20 +31,14 @@ public class Pathway {
 	}
 	
 	public boolean isAvailableTargetExist() {
-		if (coordinatesOfPath.isEmpty()) {
-			return false;
-		}
-		return true;
-	}
+        return !coordinatesOfPath.isEmpty();
+    }
 	
 	public boolean isTargetCloseEnoughToEat(int speed){
-		if (coordinatesOfPath.size() <= speed) {
-			return true;
-		}
-		return false;
-	}
+        return coordinatesOfPath.size() <= speed;
+    }
 	
-	public int quontityOfStepsToTarget() {
+	public int quantityOfStepsToTarget() {
 		return coordinatesOfPath.size();
 	}
 	

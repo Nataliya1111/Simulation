@@ -3,7 +3,6 @@ package entity;
 import java.util.Random;
 
 import main.Coordinates;
-import main.EntityNotFoundException;
 import main.WorldMap;
 import pathfinder.BfsPathFinder;
 import pathfinder.Pathway;
@@ -27,25 +26,16 @@ public abstract class Creature extends Entity {
 	public void setHp(int hp) {
 		this.hp = hp;
 	}
-	public int getSpeed() {
-		return speed;
-	}
-	public void setSpeed(int speed) {
-		this.speed = speed;
-	}
-	
+
 	public boolean isNewBorn() {
 		return isNewBorn;
 	}
 	
 	public boolean isDead(){
-		if (this.hp <= 0) {
-			return true;
-		}
-		return false;
-	}
+        return this.hp <= 0;
+    }
 	
-	public void makeMove(WorldMap worldMap) throws EntityNotFoundException { 
+	public void makeMove(WorldMap worldMap) {
 		this.isNewBorn = false;
 
 		this.hp -= 1;
@@ -73,22 +63,17 @@ public abstract class Creature extends Entity {
 	
 	protected void makeMovement(WorldMap worldMap, Coordinates finishCoordinates) {
 
-		try {
-			worldMap.removeEntity(this);
-		} catch (EntityNotFoundException e) {
-			e.printStackTrace();
-		}
+		worldMap.removeEntity(this);
 		worldMap.setEntity(finishCoordinates, this);
 	}
 	
-	private void makeRandomMove(WorldMap worldMap) throws EntityNotFoundException {
+	private void makeRandomMove(WorldMap worldMap) {
 		Coordinates startCoordinates = worldMap.getCoordinatesByEntity(this);
 		Coordinates finishCoordinates = startCoordinates;
 		int x = startCoordinates.getX();
 		int y = startCoordinates.getY();
 		Random random = new Random();
-		int triesToMove = 4;
-		for(triesToMove = 0; triesToMove < 4; triesToMove++) {
+		for(int triesToMove = 0; triesToMove < 4; triesToMove++) {
 			int randomInt = random.nextInt(4);
 			switch(randomInt) {
 				case 0:
@@ -107,9 +92,7 @@ public abstract class Creature extends Entity {
 			if (worldMap.areCoordinatesAvailableForMove(finishCoordinates)) {
 				break;
 			}
-			else {
-				finishCoordinates = startCoordinates;
-			}
+			finishCoordinates = startCoordinates;
 		}
 		this.makeMovement(worldMap, finishCoordinates);
 	}	

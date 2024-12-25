@@ -22,7 +22,7 @@ public class Predator extends Creature {
 		Coordinates targetCoordinates = path.getCoordinatesOfTarget();		
 		
 		try {
-			Entity targetEntity = worldMap.getEntityByCoordinates(targetCoordinates);
+			Entity targetEntity = worldMap.getEntity(targetCoordinates);
 			((Creature)targetEntity).setHp(0);      //making targetEntity dead by setting zero HP in case it would try to move being eaten
 		} catch (EntityNotFoundException e) {
 			e.printStackTrace();

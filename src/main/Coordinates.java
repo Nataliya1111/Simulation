@@ -4,7 +4,7 @@ public class Coordinates {
 	private final Integer x;
 	private final Integer y;
 	
-	public Coordinates(Integer x, Integer y) {
+	public Coordinates(int x, int y) {
 		this.x = x;
 		this.y = y;		
 	}

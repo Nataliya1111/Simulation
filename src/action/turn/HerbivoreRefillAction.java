@@ -1,6 +1,6 @@
 package action.turn;
 
-import action.init.HerbivoreSpawnAction;
+import action.init.EntitySpawnAction;
 import entity.Herbivore;
 import main.WorldMap;
 
@@ -11,7 +11,7 @@ public class HerbivoreRefillAction extends EntityRefillAction {
 		this.percentPerTurn = 0.15;
 		this.maxPercentOnMap = 5;
 		this.refillingEntity = Herbivore.class;
-		this.entitySpawnAction = new HerbivoreSpawnAction(worldMap);
+		this.entitySpawnAction = new EntitySpawnAction(worldMap, () -> new Herbivore());
 	}
 
 }

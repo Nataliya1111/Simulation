@@ -82,8 +82,4 @@ public class CountStatisticsAction extends Action {
 		return hungerDeadPredatorsCounter;
 	}
 
-	public List<Entity> getEntities() {
-		return entities;
-	}
-
 }

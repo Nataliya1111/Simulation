@@ -1,6 +1,6 @@
 package main;
 
-public class EntityNotFoundException extends Exception {
+public class EntityNotFoundException extends RuntimeException {
 
 	/**
 	 * 

@@ -33,37 +33,32 @@ public class WorldMap {
 		return height;
 	}
 
-	public int getQuontityOfCells() {
+	public int getQuantityOfCells() {
 		return quantityOfCells;
 	}
 	
-	public Entity getEntityByCoordinates(Coordinates coordinates) throws EntityNotFoundException{
-		if (this.isCellEmty(coordinates)) {
+	public Entity getEntity(Coordinates coordinates) throws EntityNotFoundException{
+		if (this.isCellEmpty(coordinates)) {
 			throw new EntityNotFoundException("Entity by coordinates is not found");
 		}
 		return entities.get(coordinates);
 	}
 	
 	public void setEntity(Coordinates coordinates, Entity entity) {
-		if (areCoordinatesValid(coordinates)) {
+		if (isCoordinatesValid(coordinates)) {
 			entities.put(coordinates, entity);
 		}		
 	}
 	
 	public Coordinates getCoordinatesByEntity(Entity entity) throws EntityNotFoundException {
-		Coordinates coordinates = null;
-		for (Map.Entry<Coordinates, Entity> entry : entities.entrySet()) {			
+		for (Map.Entry<Coordinates, Entity> entry : entities.entrySet()) {
 			Entity entryEntity = entry.getValue();			
 			if (entryEntity.equals(entity)) {
-				coordinates = entry.getKey();				
-				break;
+				return entry.getKey();
 			}
 		}
-		if (coordinates==null) {
-			throw new EntityNotFoundException("Coordinates of Entity are not found");
-		}
-		return coordinates;
-	}
+        throw new EntityNotFoundException("Coordinates of Entity are not found");
+    }
 	
 	public List<Entity> getListOfEntities(){
 		List<Entity> listOfEntities = new ArrayList<>();
@@ -75,33 +70,24 @@ public class WorldMap {
 	
 	public void removeEntity(Entity entity) throws EntityNotFoundException {
 		Coordinates entityCoordinates = getCoordinatesByEntity(entity);
-		if (this.isCellEmty(entityCoordinates)) {
+		if (this.isCellEmpty(entityCoordinates)) {
 			throw new EntityNotFoundException("Entity by coordinates is not found for removing");
 		}
 		entities.remove(entityCoordinates);
 	}
 	
-	public boolean isCellEmty(Coordinates coordinates) {
-		if (this.entities.containsKey(coordinates)){
-			return false;
-		}
-		return true;
-	}
+	public boolean isCellEmpty(Coordinates coordinates) {
+        return !this.entities.containsKey(coordinates);
+    }
 	
-	public boolean areCoordinatesValid(Coordinates coordinates) { // !!! М.Б. ПРОЩЕ СОЗДАТЬ HASHMAP EMPTY SELLS
+	public boolean isCoordinatesValid(Coordinates coordinates) {
 		int x = coordinates.getX();
 		int y = coordinates.getY();
-		if (x < 0 || x >= this.width || y < 0 || y >= this.height) {
-			return false;
-		}
-		return true;
-	}
+        return x >= 0 && x < this.width && y >= 0 && y < this.height;
+    }
 	
 	public boolean areCoordinatesAvailableForMove(Coordinates coordinates) {
-		if (isCellEmty(coordinates) && areCoordinatesValid(coordinates)) {
-			return true;			
-		}
-		return false;
-	}
+        return isCellEmpty(coordinates) && isCoordinatesValid(coordinates);
+    }
  
 }

@@ -23,6 +23,15 @@
 hs_err_pid*
 replay_pid*
 
+### IntelliJ IDEA ###
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+*.iws
+*.iml
+*.ipr
+.idea/
+
 ### Eclipse ###
 .apt_generated
 .classpath
@@ -32,3 +41,5 @@ replay_pid*
 .springBeans
 .sts4-cache
 bin/
+
+target/

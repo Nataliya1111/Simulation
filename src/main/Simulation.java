@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import action.Action;
 import action.init.*;
 import action.turn.*;
+import entity.*;
 import ui.DisplayInfo;
 import ui.Renderer;
 
@@ -81,11 +82,17 @@ public class Simulation {
 	}
 	
 	private List<EntitySpawnAction> getInitSpawnActionsList() {
-		initActions.add(new PredatorSpawnAction(worldMap));
-		initActions.add(new HerbivoreSpawnAction(worldMap));
-		initActions.add(new HerbSpawnAction(worldMap));
-		initActions.add(new TreeSpawnAction(worldMap));
-		initActions.add(new RockSpawnAction(worldMap));
+		initActions.add(new EntitySpawnAction(worldMap, () -> new Predator(), 3));
+		initActions.add(new EntitySpawnAction(worldMap, () -> new Herbivore(), 5));
+		initActions.add(new EntitySpawnAction(worldMap, () -> new Herb(), 5));
+		initActions.add(new EntitySpawnAction(worldMap, () -> new Tree(), 10));
+		initActions.add(new EntitySpawnAction(worldMap, () -> new Rock(), 10));
+
+//		initActions.add(new PredatorSpawnAction(worldMap));
+//		initActions.add(new HerbivoreSpawnAction(worldMap));
+//		initActions.add(new HerbSpawnAction(worldMap));
+//		initActions.add(new TreeSpawnAction(worldMap));
+//		initActions.add(new RockSpawnAction(worldMap));
 
 		return initActions;
 	}

@@ -35,9 +35,8 @@ public class BfsPathFinder implements PathFinder {
 			}
 			Collections.reverse(coordinatesOfPath);	
 		}
-			
-		Pathway path = new Pathway(coordinatesOfPath);
-		return path;		
+
+        return new Pathway(coordinatesOfPath);
 	}
 	
 	private <T extends Entity> Optional<Coordinates> getCoordinatesOfGoal(Coordinates startCoordinates, Class<T> targetEntity) {
@@ -47,7 +46,7 @@ public class BfsPathFinder implements PathFinder {
 		seenCoordinates.put(startCoordinates, new Coordinates(-1, -1));
 		while(!nextCoordinates.isEmpty()) {
 			Coordinates currentCoordinates = nextCoordinates.pollFirst();
-			if (worldMap.isCellEmty(currentCoordinates) || (currentCoordinates == startCoordinates)) {
+			if (worldMap.isCellEmpty(currentCoordinates) || (currentCoordinates == startCoordinates)) {
 				for (Coordinates coordinates : this.getConnectedCoordinates(currentCoordinates)) {
 					if(!seenCoordinates.containsKey(coordinates)) {
 						nextCoordinates.addLast(coordinates);
@@ -58,7 +57,7 @@ public class BfsPathFinder implements PathFinder {
 			else {
 				Entity currentEntity = null;
 				try {
-					currentEntity = worldMap.getEntityByCoordinates(currentCoordinates);
+					currentEntity = worldMap.getEntity(currentCoordinates);
 				} catch (EntityNotFoundException e) {
 					e.printStackTrace();
 				}
@@ -80,7 +79,7 @@ public class BfsPathFinder implements PathFinder {
 		listOfCoordinates.add(new Coordinates(x,y-1));
 		listOfCoordinates.add(new Coordinates(x,y+1));
 		for (Coordinates coordinate : listOfCoordinates) {
-			if (worldMap.areCoordinatesValid(coordinate)) {
+			if (worldMap.isCoordinatesValid(coordinate)) {
 				connectedCoordinates.add(coordinate);
 			}
 		}

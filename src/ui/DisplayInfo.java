@@ -49,7 +49,7 @@ public class DisplayInfo {
 	
 	public static void printCleaningModeMenu(){
 		System.out.printf("\nChoose Cleaning screen mode. \nCurrent cleaning mode: %d \n", Integer.parseInt(ConsoleCleaner.getCleaningMode().getNumber()));
-		System.out.println("Pay attantion: It may or may not work on your console, you can try different options. It doesn’t work in IDE consoles\n");
+		System.out.println("Pay attention: It may or may not work on your console, you can try different options. It doesn’t work in IDE consoles\n");
 		System.out.println("0 - standard mode without cleaning\n"
 				+ "1 - shows map on upper left corner of the console every move, you can scroll up to see other moves\n"
 				+ "2 - shows map on upper left corner of the console every move, clears the hole screen above\n"

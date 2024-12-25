@@ -215,7 +215,7 @@ public class UserCommandsExecutor{
 			if (userInput.equalsIgnoreCase(SettingsCommand.DISPLAYING_FREQUENCY.getKey())) {
 				return SettingsCommand.DISPLAYING_FREQUENCY;
 			}
-			System.out.println("Invalid command imput");
+			System.out.println("Invalid command input");
 			DisplayInfo.printSettingsMenu();
 			
 		}		
@@ -300,6 +300,5 @@ public class UserCommandsExecutor{
 		System.out.println("Displaying Frequency has been changed");	
 		DisplayInfo.printMainMenu();
 	}
-	
-	
+
 }

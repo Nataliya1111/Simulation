@@ -2,7 +2,7 @@ package ui;
 
 public class ConsoleCleaner {
 	
-	public static enum CleaningMode{
+	public enum CleaningMode{
 		ZERO("0"),
 		ONE("1"), 
 		TWO("2"),
@@ -28,7 +28,6 @@ public class ConsoleCleaner {
 
 	public static void setCleaningMode(CleaningMode cleaningMode) {
 		ConsoleCleaner.cleaningMode = cleaningMode;
-    	return;		
 	}
 	
 	public static void clean() {
@@ -42,12 +41,11 @@ public class ConsoleCleaner {
 		    	cleanEscapeCode2();
 		    	return;
 		    case THREE:
-		    	cleanforWindows();
+		    	cleanForWindows();
 		    	return;
 		    case FOUR:
 		    	cleanForLinuxMac();
-		    	return;
-		}		
+		}
 	}	
 	
 	private static void cleanEscapeCode1() {
@@ -59,7 +57,7 @@ public class ConsoleCleaner {
 		System.out.print("\033\143"); 
 	}
 	
-	private static void cleanforWindows() {
+	private static void cleanForWindows() {
 	    try {
 	        new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
 	    } catch (Exception E) {

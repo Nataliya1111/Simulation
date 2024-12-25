@@ -16,19 +16,19 @@ public abstract class EntityRefillAction extends Action {
 	
 	private int currentCellsCount = 0;
 	
-	private final int mapCellsQuontity;
+	private final int mapCellsQuantity;
 
 	public EntityRefillAction(WorldMap worldMap) {		
 		super(worldMap);
-		this.mapCellsQuontity = worldMap.getQuontityOfCells();
+		this.mapCellsQuantity = worldMap.getQuantityOfCells();
 	}
 
 	@Override
 	public void execute() {
 		
-		int maxEntityQuontity = this.mapCellsQuontity * maxPercentOnMap / 100;
-		int EntityQuontityOnMap = this.countOfEntity();
-		if (EntityQuontityOnMap >= maxEntityQuontity) {
+		int maxEntityQuantity = this.mapCellsQuantity * maxPercentOnMap / 100;
+		int EntityQuantityOnMap = this.countOfEntity();
+		if (EntityQuantityOnMap >= maxEntityQuantity) {
 			return;
 		}
 		
@@ -37,7 +37,7 @@ public abstract class EntityRefillAction extends Action {
 			entitySpawnAction.execute();			
 			currentCellsCount -= cellsForEntityPerTurn;
 		}
-		currentCellsCount += mapCellsQuontity;
+		currentCellsCount += mapCellsQuantity;
 	}
 	
 	private int countOfEntity() {

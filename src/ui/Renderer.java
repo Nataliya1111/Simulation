@@ -44,13 +44,13 @@ public class Renderer {
 			String mapLine = "";
 			for (int x = 0; x < widthOfMap; x ++) {
 				Coordinates coordinates = new Coordinates(x, y);
-				if (worldMap.isCellEmty(coordinates)){ 
+				if (worldMap.isCellEmpty(coordinates)){
 					mapLine += SPRITE_OF_EMPTY_SELL;
 				}	
 				else {
 					Entity entity;
 					try {
-						entity = this.worldMap.getEntityByCoordinates(coordinates);
+						entity = this.worldMap.getEntity(coordinates);
 						mapLine += getSpriteOfEntity(entity);
 					} catch (EntityNotFoundException e) {
 						e.printStackTrace();
